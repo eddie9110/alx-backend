@@ -1,4 +1,4 @@
- #!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 script for a caching system
 """
@@ -20,7 +20,7 @@ class BasicCache(BaseCaching):
         self.cache_data[key] = item
 
     def get(self, key):
-        """ 
+        """
         retrieves the value in cache associated with key
         Args:
             key
