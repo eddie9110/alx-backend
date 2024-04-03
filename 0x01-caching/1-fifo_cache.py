@@ -14,17 +14,17 @@ class FIFOCache(BaseCaching):
 
     def put(self, key, item):
         """ adds an item(key-value pair) into cache"""
-        items_max = BaseCaching.MAX_ITEMS
         if key is not None or item is not None:
-            self.cache_data[key] = item
-            self._keys.append(key)
-            if key not in self._keys:
-                self._keys.append(key)
-            if len(self._keys) >= items_max:
+            if key in self._keys:
+                self.cache_data[key] = item
+                return
+            if len(self._keys) >= BaseCaching.MAX_ITEMS:
                 # popping first item in list i.e. FIFO
                 pop_key = self._keys.pop(0)
                 del self.cache_data[pop_key]
                 print(f"DISCARD: {pop_key}")
+            self.cache_data[key] = item
+            self._keys.append(key)
 
     def get(self, key):
         """
