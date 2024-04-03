@@ -4,31 +4,33 @@ script for a LRU caching system
 """
 
 from base_caching import BaseCaching
+from collections import OrderedDict
 
 
 class LRUCache(BaseCaching):
-    """LRU caching system"""
+    """LIFO cache system"""
 
     def __init__(self):
         super().__init__()
-        self._keys = []
+        self._items = OrderedDict()
 
     def put(self, key, item):
         """ put key value pair into cache"""
-        items_max = BaseCaching.MAX_ITEMS
-        if key is not None or item is not None:
+        if key and item:
+            self._items[key] = item
             self.cache_data[key] = item
-            if key not in self._keys:
-                self._keys.append(key)
-            else:
-                self._keys.append(self._keys.pop(self._keys.index(key)))
-        if len(self._keys) > items_max:
-            popped_key = self._keys.pop(0)
-            del self.cache_data[popped_key]
-            print(f"DISCARD: {popped_key}")
+            self._items.move_to_end(key)
+
+        if len(self.cache_data) > BaseCaching.MAX_ITEMS:
+            popped_item = next(iter(self._items))
+            del self.cache_data[popped_item]
+            print("DISCARD:", popped_item)
+
+        if len(self._items) > BaseCaching.MAX_ITEMS:
+            self._items.popitem(last=False)
 
     def get(self, key):
-        """ get item by key"""
+        """ return item by key"""
         if key is None or key not in self.cache_data:
             return None
         return self.cache_data.get(key)
