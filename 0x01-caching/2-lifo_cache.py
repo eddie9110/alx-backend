@@ -1,35 +1,34 @@
 #!/usr/bin/env python3
-"""A script for FIFO caching system
+"""
+LIFO caching system
 """
 
 from base_caching import BaseCaching
 
 
-class FIFOCache(BaseCaching):
-    """FIFO caching system"""
+class LIFOCache(BaseCaching):
+    """LIFO caching system"""
+
     def __init__(self):
-        ''' Initialising class instance. '''
         super().__init__()
         self._keys = []
 
     def put(self, key, item):
-        """ adds an item(key-value pair) into cache"""
+        """ Add item into cache"""
         items_max = BaseCaching.MAX_ITEMS
         if key is not None or item is not None:
             self.cache_data[key] = item
+        if key not in self._keys:
             self._keys.append(key)
-            if key not in self._keys:
-                self._keys.append(key)
-            if len(self._keys) >= items_max:
-                # popping first item in list i.e. FIFO
-                pop_key = self._keys.pop(0)
+        else:
+            self._keys.append(self._keys.pop(self._keys.index(key)))
+            if len(self._keys) > items_max:
+                pop_key = self._keys.pop(-2)
                 del self.cache_data[pop_key]
                 print(f"DISCARD: {pop_key}")
 
     def get(self, key):
-        """
-        retrieves the value in cache associated with key
-        """
+        """ return item by key"""
         if key is None or key not in self.cache_data:
             return None
         return self.cache_data.get(key)
