@@ -10,6 +10,7 @@ def index_range(page: int, page_size: int) -> Tuple[int, int]:
     current = page_size * page - page_size
     return (current, (page_size * page))
 
+
 class Server:
     """Server class to paginate a database of popular baby names.
     """
@@ -44,7 +45,7 @@ class Server:
             return self.__dataset[x[0]:x[1]]
 
     def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict:
-        
+
         """
         method returns a dictionary containing the following key-value pairs:
 
@@ -58,7 +59,7 @@ class Server:
         """
         data = self.get_page(page, page_size)
         total_items = len(self.dataset())
-        
+
         total_pages = math.ceil(total_items / page_size)
 
         return{
