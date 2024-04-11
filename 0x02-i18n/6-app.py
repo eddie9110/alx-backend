@@ -4,7 +4,7 @@
 flask app
 """
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, g, request
 from flask_babel import Babel
 from typing import Dict
 
@@ -64,3 +64,4 @@ def hello():
 
 
 if __name__ == "__main__":
+    app.run()
