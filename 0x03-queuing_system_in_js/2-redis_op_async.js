@@ -5,7 +5,7 @@ const client = redis.createClient();
 const getProm = promisify(client.get).bind(client);
 
 client.on('error', (error) => {
-  if (error) console.log(`Redis client not connected to the server: ${error}`)
+  console.log(`Redis client not connected to the server: ${error}`)
 }).on('connect', () => {
     console.log('Redis client connected to the server');
 });
